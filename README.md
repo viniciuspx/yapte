@@ -4,11 +4,14 @@ YAPTE is a simple and lightweight text editor written in Python. It is designed 
 
 ## Features (WIP)
 
-- Lightweight and fast
-- Syntax highlighting for various programming languages
-- Customizable key bindings
-- Plugin support for extending functionality
-- Cross-platform compatibility
+- Lightweight and fast (It's python so its kinda not that lol)
+- Syntax highlighting for various programming languages (WIP)
+- Customizable key bindings (WIP)
+- Cross-platform compatibility (Ok)
+- Tabs (Oof)
+- File Explorer (Kinda of)
+- Line Enum (...)
+- Vim Mode? (maybe)
 
 ## Installation
 
