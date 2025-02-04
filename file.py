@@ -1,50 +1,53 @@
 from tkinter import *
-from tkinter.filedialog import *
-from tkinter.messagebox import *
+from tkinter.filedialog import asksaveasfile, askopenfile
+from tkinter.messagebox import showerror
 
-filename = None
+filename: str = "Untitled"
 
-# Function to create a new file
-def newFile(text):
+def new_file(text: Text) -> None:
     global filename
-    updateFilename("Untitled")
-    text.delete(0.0, END)  # Clear the text widget
+    update_filename("Untitled")
+    text.delete(0.0, END)
 
-# Function to save the current file
-def saveFile(text, label):
+def save_file(text: Text, label: Label) -> None:
     global filename
-    if filename == "Untitled": 
-        saveAs(text, label)
-    t = text.get(0.0, END)  # Get all text from the text widget
-    f = open(filename, 'w')  # Open the file in write mode
-    f.write(t)  # Write the text to the file
-    f.close()  # Close the file
+    if filename == "Untitled":
+        save_as(text, label)
+    else:
+        with open(filename, 'w') as f:
+            f.write(text.get(0.0, END))
 
-# Function to save the file with a new name
-def saveAs(text, label):
-    f = asksaveasfile(mode='w', defaultextension='.txt')  # Open save as dialog
-    t = text.get(0.0, END)  # Get all text from the text widget
+def save_as(text: Text, label: Label) -> None:
+    f = asksaveasfile(mode='w', defaultextension='.txt')
+    if f is None:
+        return
     try:
-        f.write(t.rstrip())  # Write the text to the file, removing trailing whitespace
-        if isinstance(label, Label):
-            updateFilename(f.name)
-            label.configure(text=currentFilename())
-    except:
-        showerror(title="Oops!", message="Unable to save file...")  # Show error if save fails
+        f.write(text.get(0.0, END).rstrip())
+        update_filename(f.name)
+        label.configure(text=current_filename())
+    except Exception as e:
+        showerror(title="Oops!", message=f"Unable to save file: {e}")
+    finally:
+        f.close()
 
-# Function to open an existing file
-def openFile(text, label):
-    f = askopenfile(mode='r')  # Open file dialog
-    t = f.read()  # Read the file content
-    if isinstance(label, Label):
-        updateFilename(f.name)
-        label.configure(text=currentFilename())
-    text.delete(0.0, END)  # Clear the text widget
-    text.insert(0.0, t)  # Insert the file content into the text widget
-    
-def currentFilename():
+def open_file(text: Text, label: Label) -> None:
+    f = askopenfile(mode='r')
+    if f is None:
+        return
+    try:
+        t = f.read()
+        update_filename(f.name)
+        label.configure(text=current_filename())
+        text.delete(0.0, END)
+        text.insert(0.0, t)
+    except Exception as e:
+        showerror(title="Oops!", message=f"Unable to open file: {e}")
+    finally:
+        f.close()
+
+def current_filename() -> str:
     return filename
 
-def updateFilename(string):
+def update_filename(string: str) -> None:
     global filename
     filename = string
