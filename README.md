@@ -16,3 +16,7 @@ YAPTE is a simple and lightweight text editor written in Python. It is designed 
 ## Installation
 
 To install YAPTE, simply clone the repository and run the setup script:
+
+```
+python ./main.py
+```
